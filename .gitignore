@@ -1,0 +1,37 @@
+# ── Java / Maven ──────────────────────────────────────────────
+target/
+*.class
+*.jar
+*.war
+*.ear
+.mvn/wrapper/maven-wrapper.jar
+
+# ── Spring Boot ───────────────────────────────────────────────
+*.log
+spring-shell.log
+
+# ── IDE ───────────────────────────────────────────────────────
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# ── Node / Frontend ───────────────────────────────────────────
+node_modules/
+dist/
+.vite/
+frontend/.env
+frontend/.env.local
+
+# ── Environment / Secrets — NEVER commit these ────────────────
+.env
+.env.local
+.env.production
+*.env
+
+# ── Docker ────────────────────────────────────────────────────
+# Don't ignore docker-compose.yml — commit it (no secrets in it)
+# but ignore any local override file
+docker-compose.override.yml
