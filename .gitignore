@@ -5,6 +5,7 @@ target/
 *.war
 *.ear
 .mvn/wrapper/maven-wrapper.jar
+backend/src/main/resources/application.yml
 
 # ── Spring Boot ───────────────────────────────────────────────
 *.log
@@ -32,6 +33,4 @@ frontend/.env.local
 *.env
 
 # ── Docker ────────────────────────────────────────────────────
-# Don't ignore docker-compose.yml — commit it (no secrets in it)
-# but ignore any local override file
 docker-compose.override.yml
