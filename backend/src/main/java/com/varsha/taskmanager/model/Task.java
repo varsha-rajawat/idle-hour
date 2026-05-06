@@ -52,8 +52,12 @@ public class Task {
     private TaskPriority priority = TaskPriority.MEDIUM;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "assigned_to")
+    @JoinColumn(name = "created_by")
     private User createdBy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assigned_to")
+    private User assignedTo;
 
     @Column(name = "due_date")
     private LocalDate dueDate;
