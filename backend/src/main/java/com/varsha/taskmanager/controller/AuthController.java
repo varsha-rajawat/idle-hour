@@ -37,7 +37,8 @@ public class AuthController {
         return authService.register(request);
     }
  
-     @PostMapping("/login")
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Login and receive JWT tokens")
     public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
