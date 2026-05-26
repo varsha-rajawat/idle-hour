@@ -1,212 +1,456 @@
-# Task Manager
+# Idle Hour
 
-A full-stack task management application with JWT authentication, role-based access control, and an OpenAI GPT-4o integration for AI-assisted task management.
+A modern full-stack productivity platform for managing tasks, priorities, and workflows with AI-assisted insights.
 
-**Backend:** Spring Boot 3 · Java 17 · PostgreSQL · Flyway  
-**Frontend:** React 18 · TypeScript · Redux Toolkit · Tailwind CSS  
-**AI:** OpenAI GPT-4o (task summaries + priority suggestions)  
-**DevOps:** Docker · GitHub Actions CI
+Idle Hour combines secure authentication, collaborative task management, intelligent AI suggestions, and a scalable enterprise-ready architecture into a clean developer-focused application.
 
 ---
 
-## Features
+## Preview
 
-- Register and log in with JWT-based authentication (access token + rotating refresh token)
-- Create, edit, delete, and filter tasks by status, priority, assignee, and keyword
-- Role-based access: `USER` and `ADMIN` roles with method-level security
-- AI "Summarize" button — generates a 2-3 sentence summary of any task via GPT-4o
-- AI "Suggest Priority" button — classifies a task as LOW / MEDIUM / HIGH based on its content
-- Swagger UI for exploring the API at `/swagger-ui.html`
-- Full test suite: JUnit 5 + Mockito (backend), Jest + React Testing Library (frontend)
-- One-command local setup via Docker Compose
+### Core Highlights
+
+* Secure JWT authentication with rotating refresh tokens
+* Role-based access control (`USER` and `ADMIN`)
+* AI-powered task summaries and priority suggestions using GPT-4o
+* Dynamic filtering, searching, sorting, and pagination
+* Fully containerized development setup with Docker Compose
+* CI pipeline using GitHub Actions
+* Production-style backend architecture with DTOs, Flyway migrations, Specifications, and layered services
 
 ---
 
-## Getting Started
+# Tech Stack
 
-### Prerequisites
+## Backend
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (includes Docker Compose)
-- An OpenAI API key if you want to use the AI features (the app works fine without one)
+* Java 17
+* Spring Boot 3
+* Spring Security
+* Spring Data JPA
+* PostgreSQL
+* Flyway
+* JWT Authentication
+* OpenAPI / Swagger
+* JUnit 5 + Mockito
 
-### Run locally
+## Frontend
+
+* React 18
+* TypeScript
+* Redux Toolkit
+* React Router
+* Axios
+* Tailwind CSS
+* Jest + React Testing Library
+
+## AI Integration
+
+* OpenAI GPT-4o
+
+## DevOps
+
+* Docker
+* Docker Compose
+* GitHub Actions CI
+
+---
+
+# Features
+
+## Authentication & Security
+
+* JWT access token authentication
+* Rotating refresh token implementation
+* Secure logout flow
+* Role-based authorization
+* Method-level security
+* Password encryption using BCrypt
+* Protected frontend routes
+
+---
+
+## Task Management
+
+* Create tasks
+* Edit tasks
+* Delete tasks
+* Update task status
+* Filter by:
+
+  * status
+  * priority
+  * assignee
+  * keyword search
+* Pagination and sorting support
+* Dashboard statistics endpoint
+
+---
+
+## AI Features
+
+### AI Task Summary
+
+Generate concise summaries for lengthy task descriptions.
+
+### AI Priority Suggestion
+
+Analyze task content and automatically suggest:
+
+* LOW
+* MEDIUM
+* HIGH
+
+priority levels using GPT-4o.
+
+---
+
+# Architecture Overview
+
+The project follows a production-style layered architecture.
+
+```text
+Client (React + Redux)
+        ↓
+REST API Layer (Controllers)
+        ↓
+Service Layer (Business Logic)
+        ↓
+Repository Layer (JPA)
+        ↓
+PostgreSQL Database
+```
+
+Backend responsibilities are cleanly separated using:
+
+* DTOs
+* Services
+* Specifications
+* Exception handlers
+* Security filters
+* Repository interfaces
+
+---
+
+# Project Structure
+
+```text
+idle-hour/
+├── backend/
+│   ├── src/main/java/com/varsha/taskmanager/
+│   │   ├── config/
+│   │   ├── controller/
+│   │   ├── dto/
+│   │   ├── exception/
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── security/
+│   │   ├── service/
+│   │   └── specification/
+│   │
+│   ├── src/main/resources/
+│   │   ├── application.yml
+│   │   └── db/migration/
+│   │
+│   └── src/test/
+│
+├── frontend/
+│   ├── src/
+│   │   ├── api/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── pages/
+│   │   ├── routes/
+│   │   ├── store/
+│   │   ├── types/
+│   │   └── __tests__/
+│
+├── docker-compose.yml
+├── .github/workflows/ci.yml
+└── README.md
+```
+
+---
+
+# Getting Started
+
+## Prerequisites
+
+Install:
+
+* Docker Desktop
+* Java 17
+* Node.js 20+
+* Maven
+* PostgreSQL (optional if using Docker)
+
+You also need an OpenAI API key if you want AI features enabled.
+
+---
+
+# Run With Docker (Recommended)
 
 ```bash
-# 1. Clone the repo
-git clone https://github.com/varsharajawat/task-management-app.git
-cd task-management-app
+# Clone repository
+git clone https://github.com/varsharajawat/idle-hour.git
 
-# 2. (Optional) Add your OpenAI API key
+# Enter project
+cd idle-hour
+
+# Optional: add OpenAI key
 export OPENAI_API_KEY=sk-...
 
-# 3. Start everything
+# Start application
 docker compose up --build
 ```
 
-| Service   | URL                              |
-|-----------|----------------------------------|
-| Frontend  | http://localhost:3000            |
-| Backend   | http://localhost:8080            |
-| Swagger   | http://localhost:8080/swagger-ui.html |
-| Postgres  | localhost:5432                   |
+---
 
-To stop: `docker compose down`  
-To stop and remove the database volume: `docker compose down -v`
+# Local URLs
+
+| Service    | URL                                                                            |
+| ---------- | ------------------------------------------------------------------------------ |
+| Frontend   | [http://localhost:3000](http://localhost:3000)                                 |
+| Backend    | [http://localhost:8080](http://localhost:8080)                                 |
+| Swagger UI | [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) |
+| PostgreSQL | localhost:5432                                                                 |
 
 ---
 
-## Running Without Docker
+# Run Without Docker
 
-### Backend
+## Backend
 
 ```bash
 cd backend
-
-# Start a local Postgres instance (or update application.yml to point at yours)
-# Default expects: host=localhost, port=5432, db=taskmanager, user=admin, password=password
 
 mvn spring-boot:run
 ```
 
-The app runs on port 8080. Flyway runs the migrations automatically on startup.
+Default database configuration:
 
-### Frontend
+```text
+host=localhost
+port=5432
+database=taskmanager
+username=admin
+password=password
+```
+
+Flyway migrations run automatically during startup.
+
+---
+
+## Frontend
 
 ```bash
 cd frontend
+
 npm install
 npm run dev
 ```
 
-The app runs on port 3000. The Vite dev server proxies `/api/...` requests to `localhost:8080`, so no CORS issues during development.
+The Vite dev server proxies `/api/*` requests to the backend.
 
 ---
 
-## Project Structure
+# API Overview
 
-```
-task-management-app/
-├── backend/
-│   ├── src/main/java/com/varsha/taskmanager/
-│   │   ├── config/          # SecurityConfig, OpenApiConfig
-│   │   ├── controller/      # AuthController, TaskController, UserController
-│   │   ├── service/         # AuthService, TaskService, AiService
-│   │   ├── repository/      # Spring Data JPA interfaces
-│   │   ├── model/           # User, Task, RefreshToken entities + enums
-│   │   ├── dto/             # Request/Response DTOs
-│   │   ├── exception/       # GlobalExceptionHandler + custom exceptions
-│   │   └── security/        # JwtUtil, JwtFilter, UserDetailsServiceImpl
-│   ├── src/main/resources/
-│   │   ├── application.yml
-│   │   └── db/migration/    # Flyway SQL scripts (V1, V2, V3)
-│   └── src/test/            # JUnit 5 + Mockito unit tests
-│
-├── frontend/
-│   └── src/
-│       ├── api/             # Axios instance + authApi, tasksApi
-│       ├── store/slices/    # Redux: authSlice, tasksSlice
-│       ├── routes/          # ProtectedRoute, AppRouter
-│       ├── pages/           # LoginPage, RegisterPage, DashboardPage, TasksPage
-│       ├── hooks/           # useAuth
-│       ├── types/           # TypeScript interfaces (mirrors backend DTOs)
-│       └── __tests__/       # Jest + React Testing Library
-│
-├── docker-compose.yml
-├── .github/workflows/ci.yml
-└── DEVELOPER_GUIDE.md
+All protected endpoints require:
+
+```http
+Authorization: Bearer <access_token>
 ```
 
 ---
 
-## API Overview
+## Authentication Endpoints
 
-All protected endpoints require `Authorization: Bearer <access_token>`.
-
-### Auth
-
-| Method | Endpoint              | Auth | Description                        |
-|--------|-----------------------|------|------------------------------------|
-| POST   | `/api/auth/register`  | No   | Register, returns token pair       |
-| POST   | `/api/auth/login`     | No   | Login, returns token pair          |
-| POST   | `/api/auth/refresh`   | No   | Exchange refresh token for new access token |
-| POST   | `/api/auth/logout`    | Yes  | Invalidate all refresh tokens      |
-
-### Tasks
-
-| Method | Endpoint                        | Auth  | Description                              |
-|--------|---------------------------------|-------|------------------------------------------|
-| GET    | `/api/tasks`                    | Yes   | Paginated list with filters              |
-| POST   | `/api/tasks`                    | Yes   | Create a task                            |
-| GET    | `/api/tasks/{id}`               | Yes   | Get task by ID                           |
-| PUT    | `/api/tasks/{id}`               | Yes   | Update task (creator or ADMIN)           |
-| PATCH  | `/api/tasks/{id}/status`        | Yes   | Update status only                       |
-| DELETE | `/api/tasks/{id}`               | Yes   | Delete task (creator or ADMIN)           |
-| GET    | `/api/tasks/dashboard-stats`    | Yes   | Summary counts for the dashboard         |
-| POST   | `/api/tasks/{id}/summarize`     | Yes   | AI: generate task summary (GPT-4o)       |
-| POST   | `/api/tasks/{id}/suggest-priority` | Yes | AI: suggest priority (GPT-4o)         |
-
-### Users
-
-| Method | Endpoint       | Auth         | Description         |
-|--------|----------------|--------------|---------------------|
-| GET    | `/api/users/me`| Yes          | Current user profile|
-| GET    | `/api/users`   | Yes (ADMIN)  | List all users      |
-
-Query params for `GET /api/tasks`: `status`, `priority`, `assigneeId`, `search`, `page`, `size`, `sortBy`, `sortDir`
+| Method | Endpoint             | Description          |
+| ------ | -------------------- | -------------------- |
+| POST   | `/api/auth/register` | Register user        |
+| POST   | `/api/auth/login`    | Login user           |
+| POST   | `/api/auth/refresh`  | Refresh access token |
+| POST   | `/api/auth/logout`   | Logout user          |
 
 ---
 
-## Tech Decisions Worth Knowing
+## Task Endpoints
 
-**Why UUID primary keys?** Sequential integer IDs let anyone enumerate your data (`/tasks/1`, `/tasks/2`...). UUIDs reveal nothing and work across distributed systems.
-
-**Why refresh token rotation?** On each refresh, the old token is deleted and a new one issued. If a token is stolen, the attacker is cut off the moment the legitimate user refreshes — the old token no longer exists in the database.
-
-**Why tokens in memory, not localStorage?** `localStorage` is accessible to any JavaScript on the page. XSS attacks can steal it. Redux state (in-memory) can only be read by your own app's code.
-
-**Why Flyway instead of `ddl-auto: update`?** Flyway keeps schema changes version-controlled alongside code. `ddl-auto: update` is non-deterministic — two developers running it in different orders can produce different schemas. Flyway runs migrations in a guaranteed order and records what has run in a `flyway_schema_history` table.
-
-**Why JPA Specifications for task filtering?** A task list with 4 optional filters (status, priority, assignee, search) would need 16 separate query methods to cover every combination. Specifications let you build the WHERE clause dynamically at runtime — one method handles all cases.
+| Method | Endpoint                           | Description            |
+| ------ | ---------------------------------- | ---------------------- |
+| GET    | `/api/tasks`                       | Get tasks with filters |
+| POST   | `/api/tasks`                       | Create task            |
+| GET    | `/api/tasks/{id}`                  | Get task by ID         |
+| PUT    | `/api/tasks/{id}`                  | Update task            |
+| PATCH  | `/api/tasks/{id}/status`           | Update task status     |
+| DELETE | `/api/tasks/{id}`                  | Delete task            |
+| GET    | `/api/tasks/dashboard-stats`       | Dashboard analytics    |
+| POST   | `/api/tasks/{id}/summarize`        | AI task summary        |
+| POST   | `/api/tasks/{id}/suggest-priority` | AI priority suggestion |
 
 ---
 
-## Running Tests
+## User Endpoints
+
+| Method | Endpoint        | Access              |
+| ------ | --------------- | ------------------- |
+| GET    | `/api/users/me` | Authenticated users |
+| GET    | `/api/users`    | ADMIN only          |
+
+---
+
+# Query Parameters
+
+Supported query params for:
+
+```http
+GET /api/tasks
+```
+
+| Parameter  | Description        |
+| ---------- | ------------------ |
+| status     | Filter by status   |
+| priority   | Filter by priority |
+| assigneeId | Filter by assignee |
+| search     | Keyword search     |
+| page       | Pagination page    |
+| size       | Pagination size    |
+| sortBy     | Sort field         |
+| sortDir    | asc / desc         |
+
+---
+
+# Environment Variables
+
+| Variable                   | Description         |
+| -------------------------- | ------------------- |
+| SPRING_DATASOURCE_URL      | PostgreSQL JDBC URL |
+| SPRING_DATASOURCE_USERNAME | Database username   |
+| SPRING_DATASOURCE_PASSWORD | Database password   |
+| JWT_SECRET                 | JWT signing secret  |
+| OPENAI_API_KEY             | OpenAI API key      |
+
+Example:
+
+```env
+JWT_SECRET=your-secret-key
+OPENAI_API_KEY=sk-...
+```
+
+Never commit real secrets.
+
+---
+
+# Testing
+
+## Backend Tests
 
 ```bash
-# Backend
 cd backend
 mvn test
+```
 
-# Frontend
+## Frontend Tests
+
+```bash
 cd frontend
 npm test
+```
 
-# Frontend with coverage report
+## Frontend Coverage Report
+
+```bash
 npm run test:coverage
 ```
 
 ---
 
-## Environment Variables
+# CI/CD Pipeline
 
-| Variable                    | Where used | Description                              | Default (dev) |
-|-----------------------------|------------|------------------------------------------|---------------|
-| `SPRING_DATASOURCE_URL`     | Backend    | PostgreSQL JDBC URL                      | localhost:5432/taskmanager |
-| `SPRING_DATASOURCE_USERNAME`| Backend    | Database username                        | admin         |
-| `SPRING_DATASOURCE_PASSWORD`| Backend    | Database password                        | password      |
-| `JWT_SECRET`                | Backend    | HMAC signing key (min 32 chars)          | dev default   |
-| `OPENAI_API_KEY`            | Backend    | OpenAI API key — AI features disabled without it | (empty) |
+GitHub Actions automatically runs:
 
-Never commit real values for these. Use a `.env` file locally (it's in `.gitignore`) or inject them via your deployment environment.
+1. Backend tests
+2. Frontend tests
+3. Type checking
+4. Docker build verification
+
+Workflow file:
+
+```text
+.github/workflows/ci.yml
+```
 
 ---
 
-## CI/CD
+# Technical Decisions
 
-GitHub Actions runs on every pull request:
+## Why UUIDs?
 
-1. **Backend tests** — `mvn test` with Java 17
-2. **Frontend tests** — `npm test` + TypeScript type check (`tsc --noEmit`)
-3. **Docker build check** — both Dockerfiles must build successfully (runs only if tests pass)
+UUIDs prevent predictable sequential IDs and improve scalability across distributed systems.
 
-See `.github/workflows/ci.yml` for the full configuration.
+---
+
+## Why Refresh Token Rotation?
+
+Every refresh invalidates the previous refresh token, reducing the impact of token theft.
+
+---
+
+## Why Flyway?
+
+Flyway provides deterministic, version-controlled database migrations.
+
+---
+
+## Why JPA Specifications?
+
+Specifications allow dynamic query building without creating dozens of repository methods.
+
+---
+
+## Why Store Tokens In Memory?
+
+Keeping tokens in Redux memory reduces exposure to XSS attacks compared to localStorage.
+
+---
+
+# Future Improvements
+
+* Real-time collaboration with WebSockets
+* Kanban drag-and-drop board
+* Notifications and reminders
+* File attachments
+* Team workspaces
+* Activity history
+* Dark mode
+* AI-generated subtasks
+* Calendar integration
+* Deployment to AWS or Azure
+
+---
+
+# Developer Notes
+
+This project was designed to reflect real-world backend and frontend engineering practices:
+
+* scalable architecture
+* clean code organization
+* layered services
+* secure authentication
+* DTO-based API design
+* reusable frontend state management
+* CI/CD workflows
+* Dockerized development
+
+---
+
+# License
+
+MIT License
+
+---
+
+# Author
+
+Built by Varsha Rajawat.
